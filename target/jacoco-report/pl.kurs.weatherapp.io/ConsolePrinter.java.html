@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConsolePrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WeatherApp</a> &gt; <a href="index.source.html" class="el_package">pl.kurs.weatherapp.io</a> &gt; <span class="el_source">ConsolePrinter.java</span></div><h1>ConsolePrinter.java</h1><pre class="source lang-java linenums">package pl.kurs.weatherapp.io;
+
+<span class="nc" id="L3">public class ConsolePrinter implements OutputService{</span>
+
+    @Override
+    public void printLine(String text) {
+<span class="nc" id="L7">        System.out.println(text);</span>
+<span class="nc" id="L8">    }</span>
+
+    @Override
+    public void printOption () {
+<span class="nc" id="L12">        System.out.println(&quot;0 - Wyjscie z programu.&quot;);</span>
+<span class="nc" id="L13">        System.out.println(&quot;1 - Sprawdź aktualną temperature w mieście&quot;);</span>
+<span class="nc" id="L14">        System.out.println(&quot;2 - Sprawdź prognozę temperatury w mieście&quot;);</span>
+<span class="nc" id="L15">    }</span>
+
+    @Override
+    public void exit() {
+<span class="nc" id="L19">        System.out.println(&quot;Koniec programu, papa&quot;);</span>
+<span class="nc" id="L20">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

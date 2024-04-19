@@ -1,0 +1,16 @@
+pl\kurs\weatherapp\io\OutputService.class
+pl\kurs\weatherapp\services\WeatherApiService.class
+pl\kurs\weatherapp\utils\ObjectMapperHolder.class
+pl\kurs\weatherapp\services\IWeatherService.class
+pl\kurs\weatherapp\config\AppConfig.class
+pl\kurs\weatherapp\exceptions\InvalidDataException.class
+pl\kurs\weatherapp\data\Option.class
+pl\kurs\weatherapp\app\WeatherController$1.class
+pl\kurs\weatherapp\io\ConsolePrinter.class
+pl\kurs\weatherapp\app\WeatherController.class
+pl\kurs\weatherapp\io\DataReader.class
+pl\kurs\weatherapp\app\WrongApp.class
+pl\kurs\weatherapp\io\InputService.class
+pl\kurs\weatherapp\app\App.class
+pl\kurs\weatherapp\services\WeatherUrlBuild.class
+pl\kurs\weatherapp\services\IUrlBuild.class
