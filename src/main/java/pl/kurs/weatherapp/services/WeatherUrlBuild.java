@@ -1,7 +1,9 @@
 package pl.kurs.weatherapp.services;
 
+import org.springframework.stereotype.Service;
 import pl.kurs.weatherapp.config.AppConfig;
 
+@Service
 public class WeatherUrlBuild implements IUrlBuild {
 
     @Override

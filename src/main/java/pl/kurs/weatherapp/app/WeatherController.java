@@ -1,25 +1,26 @@
 package pl.kurs.weatherapp.app;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import pl.kurs.weatherapp.data.Option;
 import pl.kurs.weatherapp.exceptions.InvalidDataException;
 import pl.kurs.weatherapp.io.InputService;
 import pl.kurs.weatherapp.io.OutputService;
-import pl.kurs.weatherapp.services.IUrlBuild;
 import pl.kurs.weatherapp.services.IWeatherService;
 
 import java.time.LocalDate;
 
+@Controller
 public class WeatherController {
 
-    private final InputService dataReader;
-    private final OutputService printer;
-    private final IUrlBuild urlBuild;
-    private final IWeatherService weatherService;
+    private InputService dataReader;
+    private OutputService printer;
+    private IWeatherService weatherService;
 
-    public WeatherController(InputService dataReader, OutputService printer, IUrlBuild urlBuild, IWeatherService weatherService) {
+    @Autowired
+    public WeatherController(InputService dataReader, OutputService printer, IWeatherService weatherService) {
         this.dataReader = dataReader;
         this.printer = printer;
-        this.urlBuild = urlBuild;
         this.weatherService = weatherService;
     }
 

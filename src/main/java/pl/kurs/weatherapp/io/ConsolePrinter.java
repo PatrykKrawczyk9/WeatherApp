@@ -1,5 +1,8 @@
 package pl.kurs.weatherapp.io;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ConsolePrinter implements OutputService{
 
     @Override

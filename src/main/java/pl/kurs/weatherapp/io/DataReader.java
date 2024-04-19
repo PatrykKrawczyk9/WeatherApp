@@ -1,5 +1,7 @@
 package pl.kurs.weatherapp.io;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.kurs.weatherapp.data.Option;
 
 import java.time.LocalDate;
@@ -7,10 +9,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Scanner;
 
+@Service
 public class DataReader implements InputService {
 
     private final Scanner scanner;
 
+    @Autowired
     public DataReader(Scanner scanner) {
         this.scanner = scanner;
     }
