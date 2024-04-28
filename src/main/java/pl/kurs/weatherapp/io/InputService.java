@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 public interface InputService {
     Option chooseOption();
+
     LocalDate getDateFromUser();
+
     String getCityFromUser();
 }

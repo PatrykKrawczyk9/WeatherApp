@@ -2,7 +2,6 @@ package pl.kurs.weatherapp.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kurs.weatherapp.dao.ICurrentWeatherConditionDao;
 import pl.kurs.weatherapp.dao.IForecastWeatherConditionDao;
@@ -23,7 +22,6 @@ public class WeatherApiService implements IWeatherService {
     private ICurrentWeatherConditionDao currentWeatherConditionDao;
     private IForecastWeatherConditionDao forecastWeatherConditionDao;
 
-    @Autowired
     public WeatherApiService(ObjectMapper objectMapper, IUrlBuild urlBuild, ICurrentWeatherConditionDao currentWeatherConditionDao, IForecastWeatherConditionDao forecastWeatherConditionDao) {
         this.objectMapper = objectMapper;
         this.urlBuild = urlBuild;

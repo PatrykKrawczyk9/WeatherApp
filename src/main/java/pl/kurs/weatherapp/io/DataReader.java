@@ -1,6 +1,5 @@
 package pl.kurs.weatherapp.io;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kurs.weatherapp.data.Option;
 
@@ -14,7 +13,6 @@ public class DataReader implements InputService {
 
     private final Scanner scanner;
 
-    @Autowired
     public DataReader(Scanner scanner) {
         this.scanner = scanner;
     }

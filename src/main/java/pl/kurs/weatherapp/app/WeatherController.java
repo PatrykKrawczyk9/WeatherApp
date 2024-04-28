@@ -1,6 +1,5 @@
 package pl.kurs.weatherapp.app;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.kurs.weatherapp.data.Option;
 import pl.kurs.weatherapp.exceptions.InvalidDataException;
@@ -17,7 +16,6 @@ public class WeatherController {
     private OutputService printer;
     private IWeatherService weatherService;
 
-    @Autowired
     public WeatherController(InputService dataReader, OutputService printer, IWeatherService weatherService) {
         this.dataReader = dataReader;
         this.printer = printer;
@@ -54,11 +52,11 @@ public class WeatherController {
         }
     }
 
-    private static void handleException(Exception e) {
+    private void handleException(Exception e) {
         if (e.getMessage() != null) {
             System.err.println(e.getMessage());
         } else
-            System.err.println("Błąd wprowadzenia");
+            printer.printLine("Błąd wprowadzenia");
     }
 
 

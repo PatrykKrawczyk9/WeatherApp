@@ -3,7 +3,7 @@ package pl.kurs.weatherapp.io;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ConsolePrinter implements OutputService{
+public class ConsolePrinter implements OutputService {
 
     @Override
     public void printLine(String text) {
@@ -11,7 +11,7 @@ public class ConsolePrinter implements OutputService{
     }
 
     @Override
-    public void printOption () {
+    public void printOption() {
         System.out.println("0 - Wyjscie z programu.");
         System.out.println("1 - Sprawdź aktualną temperature w mieście");
         System.out.println("2 - Sprawdź prognozę temperatury w mieście");

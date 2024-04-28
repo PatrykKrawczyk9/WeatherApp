@@ -10,12 +10,8 @@ import pl.kurs.weatherapp.models.ForecastWeatherCondition;
 @Repository
 public class JpaForecastWeatherConditionDao implements IForecastWeatherConditionDao{
 
-    EntityManagerFactory entityManagerFactory;
-
     @Autowired
-    public JpaForecastWeatherConditionDao(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
+    EntityManagerFactory entityManagerFactory;
 
     @Override
     public void save(ForecastWeatherCondition weatherCondition) {
