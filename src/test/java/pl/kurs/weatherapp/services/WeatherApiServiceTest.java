@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pl.kurs.weatherapp.dao.CurrentWeatherConditionRepository;
 import pl.kurs.weatherapp.dao.ForecastWeatherConditionRepository;
 import pl.kurs.weatherapp.exceptions.InvalidDataException;
+import pl.kurs.weatherapp.models.CurrentWeatherCondition;
+import pl.kurs.weatherapp.models.ForecastWeatherCondition;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,8 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class WeatherApiServiceTest {
@@ -49,7 +50,8 @@ public class WeatherApiServiceTest {
     }
 
     @Test
-    public void shouldReturnCurrentCorrectTemp() throws InvalidDataException, IOException {
+    public void getCurrentWeather_ValidData_ReturnCurrentTemperature() throws InvalidDataException, IOException {
+        //given
         String city = "Poznan";
         String exampleUrl = "https://www.example.com";
 
@@ -65,80 +67,59 @@ public class WeatherApiServiceTest {
         when(urlBuild.buildUrl(city)).thenReturn(exampleUrl);
         when(objectMapper.readTree(any(URL.class))).thenReturn(rootNodeMock);
 
-        double currentWeatherTemp = service.getCurrentWeatherTemp(city);
+        double result = service.getCurrentWeatherTemp(city);
 
-        sa.assertThat(currentWeatherTemp).isEqualTo(10);
+        assertEquals(10.0, result);
+        verify(currentWeatherConditionRepository).save(any(CurrentWeatherCondition.class));
+    }
+
+    @Test
+    void getForecastWeather_ValidData_ReturnsAverageTemperature() throws IOException, InvalidDataException {
+        // Given
+        String city = "Warsaw";
+        LocalDate date = LocalDate.of(2021, 10, 20);
+        String url = "http://example.com/api";
+        String jsonResponse = "{\"forecast\":{\"forecastday\":[{\"date\":\"2021-10-20\",\"day\":{\"avgtemp_c\":15.5}}]}}";
+
+        when(urlBuild.buildUrl(city)).thenReturn(url);
+        when(objectMapper.readTree(new URL(url))).thenReturn(new ObjectMapper().readTree(jsonResponse));
+
+        // When
+        double result = service.getForecastWeather(city, date);
+
+        // Then
+        assertEquals(15.5, result);
+        verify(forecastWeatherConditionRepository).save(any(ForecastWeatherCondition.class));
+    }
+
+    @Test
+    void getForecastWeather_InvalidCity_ThrowsInvalidDataException() throws IOException {
+        String city = "UnknownCity";
+        LocalDate date = LocalDate.now();
+        String url = "http://example.com/api";
+
+        when(urlBuild.buildUrl(city)).thenReturn(url);
+        when(objectMapper.readTree(any(URL.class))).thenThrow(new IOException());
+
+        Exception e = assertThrows(InvalidDataException.class, () -> service.getForecastWeather(city, date));
+
+        sa.assertThat(e).hasCauseExactlyInstanceOf(IOException.class);
+        sa.assertThat(e).hasMessage("Niepoprawnie podana miejscowosc");
+        sa.assertThat(e).isExactlyInstanceOf(InvalidDataException.class);
         sa.assertAll();
     }
 
     @Test
-    @Disabled
-    public void shouldReturnForecastCorrectTemp() throws InvalidDataException, IOException {
-        String city = "Poznan";
-        String exampleUrl = "https://www.example.com";
-        URL url = new URL(exampleUrl);
-        LocalDate date = LocalDate.of(2024, 4, 30);
-        when(urlBuild.buildUrl(city)).thenReturn(exampleUrl);
+    public void getCurrentWeather_InvalidCity_ThrowsInvalidDataException() throws IOException {
+        String city = "UnknownCity";
+        String url = "http://example.com/api";
 
-        JsonNode rootNode = mock(JsonNode.class);
-        JsonNode forecastNode = mock(JsonNode.class);
-        JsonNode daysArrayNode = mock(JsonNode.class); // Reprezentuje listę dni
-        JsonNode dayNode = mock(JsonNode.class);
-        JsonNode tempNode = mock(JsonNode.class);
-
-        // Ustawienie URL
-        when(urlBuild.buildUrl(city)).thenReturn(exampleUrl);
-
-        // Konfiguracja ObjectMapper
-        when(objectMapper.readTree(new URL(exampleUrl))).thenReturn(rootNode);
-        when(rootNode.get("forecast")).thenReturn(forecastNode);
-        when(forecastNode.get("forecastday")).thenReturn(daysArrayNode);
-
-        // Symulacja iteratora
-        List<JsonNode> daysList = Arrays.asList(dayNode);
-        when(daysArrayNode.elements()).thenReturn(daysList.iterator());
-
-        // Konfiguracja dnia, który pasuje do podanej daty
-        when(dayNode.get("date")).thenReturn(mock(JsonNode.class));
-        when(dayNode.get("date").asText()).thenReturn(date.toString());
-        when(dayNode.get("day")).thenReturn(tempNode);
-        when(tempNode.get("avgtemp_c")).thenReturn(mock(JsonNode.class));
-        when(tempNode.get("avgtemp_c").asDouble()).thenReturn(15.5);
-
-        // Wywołanie metody i asercje
-        double forecastWeather = service.getForecastWeather(city, date);
-        assertEquals(15.5, forecastWeather, 0.0);
-
-
-        JsonNode temp4NodeMock = mock(JsonNode.class);
-        when(temp4NodeMock.asDouble()).thenReturn(10.0);
-
-        JsonNode temp3NodeMock = mock(JsonNode.class);
-        when(temp3NodeMock.get("avgtemp_c")).thenReturn(temp4NodeMock);
-
-        JsonNode temp2NodeMock = mock(JsonNode.class);
-        when(temp2NodeMock.get("day")).thenReturn(temp3NodeMock);
-
-        JsonNode temp1NodeMock = mock(JsonNode.class);
-        when(temp1NodeMock.get("date")).thenReturn(temp2NodeMock);
-
-        JsonNode resultNodeMock = mock(JsonNode.class);
-
-        JsonNode rootNodeMock = mock(JsonNode.class);
-        when(rootNodeMock.get("forecast")).thenReturn(resultNodeMock);
-
-        when(urlBuild.buildUrl(city)).thenReturn(exampleUrl);
-//        when(objectMapper.readTree(url)).thenReturn(jsonNode);
-
-    }
-
-    @Test
-    public void shouldThrowInvalidDataExceptionWhenCityIsNull() {
-        String city = "";
+        when(urlBuild.buildUrl(city)).thenReturn(url);
+        when(objectMapper.readTree(any(URL.class))).thenThrow(new IOException());
 
         Exception e = assertThrows(InvalidDataException.class, () -> service.getCurrentWeatherTemp(city));
 
-        sa.assertThat(e).hasCauseExactlyInstanceOf(MalformedURLException.class);
+        sa.assertThat(e).hasCauseExactlyInstanceOf(IOException.class);
         sa.assertThat(e).hasMessage("Niepoprawnie podana miejscowosc");
         sa.assertThat(e).isExactlyInstanceOf(InvalidDataException.class);
         sa.assertAll();
