@@ -10,8 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.kurs.weatherapp.dao.ICurrentWeatherConditionDao;
-import pl.kurs.weatherapp.dao.IForecastWeatherConditionDao;
+import pl.kurs.weatherapp.dao.CurrentWeatherConditionRepository;
+import pl.kurs.weatherapp.dao.ForecastWeatherConditionRepository;
 import pl.kurs.weatherapp.exceptions.InvalidDataException;
 
 import java.io.IOException;
@@ -35,9 +35,9 @@ public class WeatherApiServiceTest {
     @Mock
     IUrlBuild urlBuild;
     @Mock
-    ICurrentWeatherConditionDao currentWeatherConditionDao;
+    CurrentWeatherConditionRepository currentWeatherConditionRepository;
     @Mock
-    IForecastWeatherConditionDao forecastWeatherConditionDao;
+    ForecastWeatherConditionRepository forecastWeatherConditionRepository;
     @InjectMocks
     WeatherApiService service;
     SoftAssertions sa;

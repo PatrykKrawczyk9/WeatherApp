@@ -3,8 +3,8 @@ package pl.kurs.weatherapp.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import pl.kurs.weatherapp.dao.ICurrentWeatherConditionDao;
-import pl.kurs.weatherapp.dao.IForecastWeatherConditionDao;
+import pl.kurs.weatherapp.dao.CurrentWeatherConditionRepository;
+import pl.kurs.weatherapp.dao.ForecastWeatherConditionRepository;
 import pl.kurs.weatherapp.exceptions.InvalidDataException;
 import pl.kurs.weatherapp.models.CurrentWeatherCondition;
 import pl.kurs.weatherapp.models.ForecastWeatherCondition;
@@ -19,14 +19,18 @@ public class WeatherApiService implements IWeatherService {
 
     private ObjectMapper objectMapper;
     private IUrlBuild urlBuild;
-    private ICurrentWeatherConditionDao currentWeatherConditionDao;
-    private IForecastWeatherConditionDao forecastWeatherConditionDao;
+    private CurrentWeatherConditionRepository currentWeatherConditionRepository;
+    private ForecastWeatherConditionRepository forecastWeatherConditionRepository;
 
-    public WeatherApiService(ObjectMapper objectMapper, IUrlBuild urlBuild, ICurrentWeatherConditionDao currentWeatherConditionDao, IForecastWeatherConditionDao forecastWeatherConditionDao) {
+    public WeatherApiService(
+            ObjectMapper objectMapper,
+            IUrlBuild urlBuild,
+            CurrentWeatherConditionRepository currentWeatherConditionRepository,
+            ForecastWeatherConditionRepository forecastWeatherConditionRepository) {
         this.objectMapper = objectMapper;
         this.urlBuild = urlBuild;
-        this.currentWeatherConditionDao = currentWeatherConditionDao;
-        this.forecastWeatherConditionDao = forecastWeatherConditionDao;
+        this.currentWeatherConditionRepository = currentWeatherConditionRepository;
+        this.forecastWeatherConditionRepository = forecastWeatherConditionRepository;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class WeatherApiService implements IWeatherService {
         double avgTemp = node.get("current").get("temp_c").asDouble();
 
         CurrentWeatherCondition weatherCondition = new CurrentWeatherCondition(city, LocalDateTime.now(), avgTemp);
-        currentWeatherConditionDao.save(weatherCondition);
+        currentWeatherConditionRepository.save(weatherCondition);
         System.out.println(weatherCondition.getAvgTemp());
 
         return avgTemp;
@@ -68,7 +72,7 @@ public class WeatherApiService implements IWeatherService {
             if (date.toString().equals(forecastDate)) {
                 avgTemp = dayNode.get("day").get("avgtemp_c").asDouble();
                 ForecastWeatherCondition weatherCondition = new ForecastWeatherCondition(city, date, avgTemp);
-                forecastWeatherConditionDao.save(weatherCondition);
+                forecastWeatherConditionRepository.save(weatherCondition);
                 return avgTemp;
             }
         }

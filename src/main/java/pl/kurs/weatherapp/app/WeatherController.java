@@ -33,23 +33,27 @@ public class WeatherController {
     private void executeOption(Option option) {
         try {
             switch (option) {
-                case CURRENT_WEATHER -> {
-                    String city = dataReader.getCityFromUser();
-                    double currentWeatherTemp = weatherService.getCurrentWeatherTemp(city);
-                    printer.printLine("Aktualna temperatura w miejscowosci " + city + " to: " + currentWeatherTemp + "C");
-                }
-                case AVG_FORECAST_WEATHER -> {
-                    String city = dataReader.getCityFromUser();
-                    LocalDate dateFromUser = dataReader.getDateFromUser();
-                    double forecastWeather = weatherService.getForecastWeather(city, dateFromUser);
-                    printer.printLine("Srednia temperatura w dniu + " + dateFromUser + " bedzie wynosic: " + forecastWeather + "C");
-                }
+                case CURRENT_WEATHER -> getCurrentWeather();
+                case AVG_FORECAST_WEATHER -> getAvgForecastWeather();
                 case EXIT -> printer.exit();
             }
         } catch (InvalidDataException e) {
             handleException(e);
             printer.printOption();
         }
+    }
+
+    private void getAvgForecastWeather() throws InvalidDataException {
+        String city = dataReader.getCityFromUser();
+        LocalDate dateFromUser = dataReader.getDateFromUser();
+        double forecastWeather = weatherService.getForecastWeather(city, dateFromUser);
+        printer.printLine("Srednia temperatura w dniu + " + dateFromUser + " bedzie wynosic: " + forecastWeather + "C");
+    }
+
+    private void getCurrentWeather() throws InvalidDataException {
+        String city = dataReader.getCityFromUser();
+        double currentWeatherTemp = weatherService.getCurrentWeatherTemp(city);
+        printer.printLine("Aktualna temperatura w miejscowosci " + city + " to: " + currentWeatherTemp + "C");
     }
 
     private void handleException(Exception e) {

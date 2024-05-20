@@ -1,9 +1,6 @@
 package pl.kurs.weatherapp.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +15,8 @@ public class CurrentWeatherCondition implements Serializable {
     static final long serialVersionUID = 42L;
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String city;
     private LocalDateTime date;
     private double avgTemp;
